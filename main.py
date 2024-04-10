@@ -1,0 +1,29 @@
+import cv2 as cv
+import os
+
+img_path = 'кошечка.jpeg'
+
+if os.path.exists(img_path):
+    img = cv.imread(img_path, cv.IMREAD_COLOR)
+    if img is not None:
+        rows, cols = img.shape[:2]
+
+        angle = float(input("Введите угол поворота (в градусах): "))
+
+        flip_horizontal = input("Отразить изображение по горизонтали? (да/нет): ").lower() == "да"
+
+        M = cv.getRotationMatrix2D(((cols-1)/2.0, (rows-1)/2.0), angle, 1)
+
+        if flip_horizontal:
+            img = cv.flip(img, 1)
+
+        dst = cv.warpAffine(img, M, (cols, rows))
+
+        cv.imshow('Rotated Image', dst)
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+    else:
+        print("Файл не удалось прочитать.")
+else:
+    print("Файл не существует.")
+
